@@ -1,4 +1,5 @@
 ﻿using BIZNEWS_FREE.Data;
+using BIZNEWS_FREE.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -24,14 +25,18 @@ namespace BIZNEWS_FREE.Areas.Admin.Controllers
 
         // Get: /Admin/Article/Create
         [HttpGet]
-        [ValidateAntiForgeryToken] // Добавляем атрибут для защиты от CSRF атак
         public IActionResult Create()
         {
             var categories = _context.Categories.ToList();
             var tags = _context.Tags.ToList();
             ViewData["tags"] = tags;                        //siyahida olan melumati bura gonderir
-            ViewBag.Categories = new SelectList(categories, "Id", "CategoryName");     //arxada select opsion yaradirB
+            ViewBag.Categories = new SelectList(categories, "Id", "CategoryName");     //arxada select opsion yaradir
             return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(Article article, IFormFile file, List<int> tagIds)
+        {
+            return View(article);
         }
     }
 }
